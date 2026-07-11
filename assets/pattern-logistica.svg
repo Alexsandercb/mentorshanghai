@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520" fill="none">
+  <g stroke="#101010" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Grade técnica -->
+    <g opacity=".36" stroke-width="1">
+      <path d="M80 24v472M176 24v472M272 24v472M368 24v472M464 24v472M560 24v472M656 24v472" stroke-dasharray="2 15"/>
+      <path d="M32 80h696M32 176h696M32 272h696M32 368h696M32 464h696" stroke-dasharray="2 15"/>
+    </g>
+
+    <!-- Rota principal -->
+    <path d="M54 405C151 407 160 292 258 292c104 0 119 92 216 71 91-20 90-151 221-164" stroke-width="4" stroke-dasharray="14 13"/>
+    <path d="m681 188 18 10-14 15" stroke-width="4"/>
+
+    <!-- Pontos da rota -->
+    <g fill="#101010">
+      <circle cx="54" cy="405" r="7"/><circle cx="258" cy="292" r="7"/><circle cx="474" cy="363" r="7"/><circle cx="696" cy="199" r="7"/>
+    </g>
+    <g stroke-width="2">
+      <circle cx="54" cy="405" r="16"/><circle cx="258" cy="292" r="16"/><circle cx="474" cy="363" r="16"/><circle cx="696" cy="199" r="16"/>
+    </g>
+
+    <!-- Coordenadas e marcadores -->
+    <g opacity=".7" stroke-width="2">
+      <path d="M110 116h52m-26-26v52M550 106h72m-36-36v72"/>
+      <path d="M94 452h94M94 464h56M510 424h132M510 436h78"/>
+      <rect x="208" y="66" width="116" height="62" rx="8"/>
+      <path d="M226 86h80M226 103h52"/>
+    </g>
+
+    <!-- Arcos de alcance -->
+    <path d="M620 290a106 106 0 0 1 106 106M620 322a74 74 0 0 1 74 74M620 354a42 42 0 0 1 42 42" opacity=".48" stroke-width="2"/>
+  </g>
+</svg>

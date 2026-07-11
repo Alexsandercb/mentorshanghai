@@ -1,0 +1,7 @@
+.DS_Store
+
+# Arquivos-fonte e intermediários de imagem
+assets/*.png
+assets/hero-pneus-mobile.webp
+assets/logo-shanghai-pneus-v1.webp
+assets/pattern-automotivo.svg
