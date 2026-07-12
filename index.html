@@ -300,6 +300,9 @@
     .submit:hover { transform: translateY(-2px); background: var(--red-dark); box-shadow: 0 15px 30px rgba(215,25,32,.28); }
 
     .privacy { margin: 0; text-align: center; color: #999; font-size: 11px; }
+    .form-error { display: none; margin: 0; padding: 12px 14px; border: 1px solid rgba(215,25,32,.2); border-radius: 8px; color: #9f151b; background: rgba(215,25,32,.06); font-size: 12px; line-height: 1.5; text-align: center; }
+    .form-error.is-visible { display: block; }
+    .submit:disabled { cursor: wait; opacity: .72; transform: none; box-shadow: none; }
     .success { display: none; padding: 28px; border-radius: 12px; background: #f7f7f7; border-left: 4px solid var(--red); }
     .success h3 { margin: 0 0 8px; font-size: 24px; }
     .success p { margin: 0; color: var(--muted); line-height: 1.6; }
@@ -660,6 +663,7 @@
             </div>
 
             <button class="submit" type="submit">Quero vender com mais margem <span class="cta-icon" aria-hidden="true">↗</span></button>
+            <p class="form-error" id="form-error" role="alert"></p>
             <p class="privacy">🔒 Seus dados estão seguros e não enviamos spam.</p>
           </form>
         </div>
@@ -770,9 +774,27 @@
 
   <footer>Mentor Shanghai © 2026. Todos os direitos reservados.</footer>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyApMdDWRL2M6cDNaMVL1HIwj_lH41qidDI',
+      authDomain: 'mentoriashanghai.firebaseapp.com',
+      projectId: 'mentoriashanghai',
+      storageBucket: 'mentoriashanghai.firebasestorage.app',
+      messagingSenderId: '260643686007',
+      appId: '1:260643686007:web:648b8739b83f7ad7a0a872',
+      measurementId: 'G-P7NNELWYX3'
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
     const phone = document.querySelector('#whatsapp');
     const form = document.querySelector('#lead-form');
+    const submitButton = form.querySelector('.submit');
+    const submitButtonContent = submitButton.innerHTML;
+    const formError = document.querySelector('#form-error');
 
     const revealGroups = [
       '.section-kicker', '.section-title', '.section-lead',
@@ -869,10 +891,38 @@
       event.target.value = value;
     });
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      document.querySelector('#form-content').style.display = 'none';
-      document.querySelector('#success').style.display = 'block';
+      if (submitButton.disabled) return;
+
+      formError.classList.remove('is-visible');
+      formError.textContent = '';
+      submitButton.disabled = true;
+      submitButton.textContent = 'Enviando cadastro...';
+
+      const formData = new FormData(form);
+      const lead = {
+        name: String(formData.get('name') || '').trim(),
+        whatsapp: String(formData.get('whatsapp') || '').trim(),
+        city: String(formData.get('city') || '').trim(),
+        sold_before: String(formData.get('sold_before') || ''),
+        market_level: String(formData.get('market_level') || ''),
+        created_at: serverTimestamp(),
+        source: window.location.href.slice(0, 500)
+      };
+
+      try {
+        await addDoc(collection(db, 'leads'), lead);
+        form.reset();
+        document.querySelector('#form-content').style.display = 'none';
+        document.querySelector('#success').style.display = 'block';
+      } catch (error) {
+        console.error('Não foi possível salvar o lead:', error);
+        formError.textContent = 'Não foi possível enviar agora. Verifique sua conexão e tente novamente.';
+        formError.classList.add('is-visible');
+        submitButton.disabled = false;
+        submitButton.innerHTML = submitButtonContent;
+      }
     });
   </script>
 </body>
