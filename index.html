@@ -796,6 +796,7 @@
 
     const firebaseApp = initializeApp(firebaseConfig);
     const db = getFirestore(firebaseApp);
+    const GOOGLE_SHEETS_WEB_APP_URL = '';
     const phone = document.querySelector('#whatsapp');
     const form = document.querySelector('#lead-form');
     const submitButton = form.querySelector('.submit');
@@ -897,6 +898,30 @@
       event.target.value = value;
     });
 
+    const syncLeadToGoogleSheets = async (leadId, lead) => {
+      if (!GOOGLE_SHEETS_WEB_APP_URL) return;
+
+      const payload = {
+        lead_id: leadId,
+        name: lead.name,
+        whatsapp: lead.whatsapp,
+        city: lead.city,
+        sold_before: lead.sold_before,
+        market_level: lead.market_level,
+        created_at: new Date().toISOString(),
+        source: lead.source
+      };
+
+      await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-store',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+    };
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (submitButton.disabled) return;
@@ -918,7 +943,14 @@
       };
 
       try {
-        await addDoc(collection(db, 'leads'), lead);
+        const leadDocument = await addDoc(collection(db, 'leads'), lead);
+
+        try {
+          await syncLeadToGoogleSheets(leadDocument.id, lead);
+        } catch (sheetError) {
+          console.error('Lead salvo no Firebase, mas não sincronizado com o Google Sheets:', sheetError);
+        }
+
         form.reset();
         document.querySelector('#form-content').style.display = 'none';
         document.querySelector('#success').style.display = 'block';
