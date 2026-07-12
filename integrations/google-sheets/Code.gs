@@ -9,6 +9,9 @@
 
 const PLANILHA_ID = 'COLE_AQUI_O_ID_DA_PLANILHA';
 const NOME_DA_ABA = 'Leads';
+const ORIGENS_PERMITIDAS = [
+  'https://alexsandercb.github.io/mentorshanghai/'
+];
 
 const CABECALHOS = [
   'Data e hora',
@@ -43,8 +46,10 @@ function doPost(evento) {
 
     const planilha = SpreadsheetApp.openById(PLANILHA_ID);
     const aba = prepararAba_(planilha);
+    const cache = CacheService.getScriptCache();
+    const chaveTelefone = 'telefone:' + hash_(dados.whatsapp);
 
-    if (leadJaExiste_(aba, dados.lead_id)) {
+    if (leadJaExiste_(aba, dados.lead_id) || cache.get(chaveTelefone)) {
       return respostaJson_({ ok: true, duplicado: true });
     }
 
@@ -61,6 +66,7 @@ function doPost(evento) {
 
     const ultimaLinha = aba.getLastRow();
     aba.getRange(ultimaLinha, 1).setNumberFormat('dd/MM/yyyy HH:mm:ss');
+    cache.put(chaveTelefone, '1', 60);
 
     return respostaJson_({ ok: true });
   } catch (erro) {
@@ -121,9 +127,32 @@ function validarLead_(dados) {
     throw new Error('Experiência de mercado inválida.');
   }
 
-  if (dados.name.length > 120 || dados.city.length > 120 || dados.source.length > 500) {
+  if (!/^[A-Za-z0-9_-]{10,150}$/.test(dados.lead_id)) {
+    throw new Error('ID do lead inválido.');
+  }
+
+  if (!/^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(dados.whatsapp)) {
+    throw new Error('WhatsApp inválido.');
+  }
+
+  const dataCriacao = new Date(dados.created_at);
+  if (isNaN(dataCriacao.getTime()) || Math.abs(Date.now() - dataCriacao.getTime()) > 86400000) {
+    throw new Error('Data do lead inválida.');
+  }
+
+  if (!ORIGENS_PERMITIDAS.some((origem) => dados.source.startsWith(origem))) {
+    throw new Error('Origem não permitida.');
+  }
+
+  if (dados.name.length < 2 || dados.name.length > 120 || dados.city.length < 2 || dados.city.length > 120 || dados.source.length > 500) {
     throw new Error('Um ou mais campos excedem o limite permitido.');
   }
+}
+
+function hash_(valor) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(valor))
+    .map((byte) => ('0' + (byte & 255).toString(16)).slice(-2))
+    .join('');
 }
 
 function textoSeguro_(valor) {

@@ -1,7 +1,8 @@
 .DS_Store
+.idea/
+.vscode/
+node_modules/
+*.log
 
-# Arquivos-fonte e intermediários de imagem
-assets/*.png
-assets/hero-pneus-mobile.webp
-assets/logo-shanghai-pneus-v1.webp
-assets/pattern-automotivo.svg
+# Fontes pesadas e intermediários de design não publicados
+design-sources/

@@ -7,7 +7,7 @@ O formulário salva primeiro no Firebase e, em seguida, envia uma cópia do lead
 1. Crie uma planilha no Google Sheets com o nome `Leads Mentor Shanghai`.
 2. Copie o ID da planilha. Ele é o trecho da URL entre `/d/` e `/edit`.
 3. Na planilha, acesse **Extensões > Apps Script**.
-4. Apague o código inicial e cole o conteúdo de `google-apps-script.gs`.
+4. Apague o código inicial e cole o conteúdo de `integrations/google-sheets/Code.gs`.
 5. Troque `COLE_AQUI_O_ID_DA_PLANILHA` pelo ID copiado no passo 2.
 6. Salve o projeto.
 
@@ -22,13 +22,15 @@ O formulário salva primeiro no Firebase e, em seguida, envia uma cópia do lead
 
 ## 3. Conectar a landing page
 
-No `index.html`, localize:
+Em `assets/js/config.js`, localize:
 
 ```js
-const GOOGLE_SHEETS_WEB_APP_URL = '';
+export const googleSheetsWebAppUrl = '';
 ```
 
 Cole a URL `/exec` entre as aspas. Depois publique novamente a landing page.
+
+Sempre que `integrations/google-sheets/Code.gs` for alterado, salve o código no Apps Script e atualize a implantação escolhendo **Nova versão**.
 
 ## Colunas criadas automaticamente
 
