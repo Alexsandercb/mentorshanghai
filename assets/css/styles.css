@@ -358,6 +358,7 @@
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 64px; border-top: 1px solid rgba(255,255,255,.16); border-bottom: 1px solid rgba(255,255,255,.16); }
     .stat { padding: 38px 34px 40px 0; }
     .stat + .stat { padding-left: 34px; border-left: 1px solid rgba(255,255,255,.16); }
+    .stat em { display: block; margin-bottom: 18px; color: var(--red); font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .14em; }
     .stat strong { display: flex; align-items: baseline; gap: 3px; color: white; font-size: clamp(38px, 4vw, 62px); line-height: 1; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
     .stat strong span { color: white; }
     .stat p { max-width: 280px; margin: 14px 0 0; color: rgba(255,255,255,.58); font-size: 13px; line-height: 1.6; }
@@ -441,10 +442,11 @@
     .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 58px; }
     .testimonial { position: relative; min-height: 330px; display: flex; flex-direction: column; justify-content: space-between; padding: 34px 30px 28px; overflow: hidden; border: 1px solid #e8e8e8; border-radius: 14px; background: white; box-shadow: 0 16px 45px rgba(0,0,0,.06); transition: transform .35s, box-shadow .35s; }
     .testimonial:hover { transform: translateY(-5px); box-shadow: 0 22px 50px rgba(0,0,0,.09); }
-    .testimonial::before { content: "“"; position: absolute; top: 10px; right: 24px; color: rgba(215,25,32,.09); font-family: Georgia, serif; font-size: 116px; line-height: 1; }
+    .testimonial::before { content: "↗"; position: absolute; top: 22px; right: 25px; color: rgba(215,25,32,.1); font-size: 52px; font-weight: 800; line-height: 1; }
     .testimonial-tag { width: fit-content; padding: 7px 10px; border-radius: 999px; color: var(--red); background: rgba(215,25,32,.07); font-size: 9px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
     .testimonial-copy { position: relative; z-index: 1; }
-    .testimonial-copy blockquote { max-width: 310px; margin: 26px 0 0; color: #202020; font-size: 18px; line-height: 1.58; letter-spacing: -.015em; font-weight: 650; }
+    .testimonial-copy h3 { max-width: 310px; margin: 30px 0 12px; color: #202020; font-size: 23px; line-height: 1.25; letter-spacing: -.03em; }
+    .testimonial-copy p { max-width: 310px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
     .testimonial-person { display: flex; align-items: center; gap: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); }
     .testimonial-avatar { flex: 0 0 44px; width: 44px; height: 44px; overflow: hidden; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 1px #ddd; background: #ddd; }
     .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
@@ -530,22 +532,19 @@
         gap: 14px;
         margin-right: -22px;
         padding-right: 22px;
-        overflow-x: auto;
-        overscroll-behavior-x: contain;
-        scroll-snap-type: x mandatory;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
         scroll-behavior: smooth;
-        scrollbar-width: none;
+        touch-action: pan-y;
       }
-      .testimonial-grid::-webkit-scrollbar { display: none; }
       .testimonial {
         flex: 0 0 calc(100% - 34px);
         min-height: 390px;
         text-align: center;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
       }
       .testimonial-tag { margin-right: auto; margin-left: auto; }
-      .testimonial-copy blockquote { margin-right: auto; margin-left: auto; }
+      .testimonial-copy h3, .testimonial-copy p { margin-right: auto; margin-left: auto; }
+      .testimonial-copy p { margin-top: 0; }
       .testimonial-person { justify-content: center; }
       .testimonial-identity { text-align: left; }
       .carousel-controls {
@@ -558,7 +557,16 @@
       .carousel-dot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: #cfcfcf; cursor: pointer; transition: width .25s, border-radius .25s, background .25s; }
       .carousel-dot.is-active { width: 25px; border-radius: 999px; background: var(--red); }
       .carousel-arrows { display: flex; gap: 8px; }
-      .carousel-arrow { width: 43px; height: 43px; display: grid; place-items: center; border: 1px solid #ddd; border-radius: 50%; color: var(--black); background: white; font-size: 18px; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+      .carousel-arrow { width: 43px; height: 43px; display: grid; place-items: center; padding: 0; border: 1px solid #ddd; border-radius: 50%; color: var(--black); background: white; font-size: 0; line-height: 0; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+      .carousel-arrow::before {
+        content: "";
+        width: 21px;
+        height: 21px;
+        background: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 12H4M10 6l-6 6 6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 12H4M10 6l-6 6 6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+      }
+      .carousel-next::before { transform: rotate(180deg); }
       .carousel-arrow:active { color: white; border-color: var(--red); background: var(--red); }
       .recurrence-visual { min-height: 0; max-width: none; aspect-ratio: 3 / 2; }
       .recurrence-badge { left: 14px; bottom: 14px; padding: 13px 14px; border-radius: 14px; font-size: 9px; }
