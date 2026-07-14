@@ -37,34 +37,6 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 
-const formatNumber = (number, decimals) => number.toLocaleString('pt-BR', {
-  minimumFractionDigits: decimals,
-  maximumFractionDigits: decimals
-});
-
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    const counter = entry.target;
-    const target = Number(counter.dataset.target);
-    const decimals = Number(counter.dataset.decimals || 0);
-    const duration = 1700;
-    const start = performance.now();
-
-    const animate = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      counter.textContent = formatNumber(target * eased, decimals);
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-
-    requestAnimationFrame(animate);
-    counterObserver.unobserve(counter);
-  });
-}, { threshold: .6 });
-
-document.querySelectorAll('.counter').forEach((counter) => counterObserver.observe(counter));
-
 const testimonialTrack = document.querySelector('.testimonial-grid');
 const testimonialCards = [...document.querySelectorAll('.testimonial')];
 const carouselDots = [...document.querySelectorAll('.carousel-dot')];
