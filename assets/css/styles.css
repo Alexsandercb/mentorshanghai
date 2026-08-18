@@ -174,6 +174,32 @@
     .market .inline-cta .cta-icon { color: white; background: var(--red); }
     .market .inline-cta:hover .cta-icon { color: var(--black); background: white; }
 
+    .hero-cta, .inline-cta, .submit, .cta-link {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-cta::after, .inline-cta::after, .submit::after, .cta-link::after {
+      content: "";
+      position: absolute;
+      top: -55%;
+      left: -72%;
+      width: 42%;
+      height: 210%;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1) 25%, rgba(255,255,255,.36) 50%, rgba(255,255,255,.1) 75%, transparent);
+      transform: translateX(0) skewX(-22deg);
+      animation: ctaShine 2.8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    .market .inline-cta::after {
+      background: linear-gradient(90deg, transparent, rgba(215,25,32,.06) 25%, rgba(215,25,32,.2) 50%, rgba(215,25,32,.06) 75%, transparent);
+    }
+    .submit:disabled::after { animation: none; opacity: 0; }
+    @keyframes ctaShine {
+      0%, 8% { transform: translateX(0) skewX(-22deg); }
+      72%, 100% { transform: translateX(540%) skewX(-22deg); }
+    }
+
 
     .form-area {
       min-height: 100vh;
@@ -292,14 +318,16 @@
       content: "";
       position: absolute;
       z-index: 0;
-      top: 18px;
-      right: -25px;
-      width: 820px;
-      height: 560px;
+      top: -45px;
+      right: -170px;
+      width: 760px;
+      height: 760px;
       pointer-events: none;
-      background: url("../graphics/pattern-logistica.svg?v=2") center / contain no-repeat;
+      background: url("../images/decor/tire-sidewall-detail.webp?v=1") center / contain no-repeat;
       opacity: .05;
-      transform: rotate(-4deg);
+      transform: rotate(-7deg);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 48%, #000 35%, rgba(0,0,0,.8) 55%, transparent 82%);
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 48%, #000 35%, rgba(0,0,0,.8) 55%, transparent 82%);
     }
     .section::after {
       content: "";
@@ -318,11 +346,17 @@
     }
     .section:nth-of-type(even)::before {
       right: auto;
-      left: -45px;
-      transform: rotate(7deg) scale(.92);
+      left: -210px;
+      width: 820px;
+      height: 560px;
+      background-image: url("../images/decor/tire-tread-detail.webp?v=1");
+      background-size: 120% auto;
+      transform: rotate(-8deg);
+      -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 44%, #000 28%, rgba(0,0,0,.72) 50%, transparent 83%);
+      mask-image: radial-gradient(ellipse 62% 58% at 50% 44%, #000 28%, rgba(0,0,0,.72) 50%, transparent 83%);
     }
     .section > .section-inner { position: relative; z-index: 1; }
-    .market::before, .final-cta::before { filter: invert(1); opacity: .05; }
+    .market::before, .final-cta::before { filter: invert(1) grayscale(1); opacity: .025; }
     .market::after, .final-cta::after {
       background-image:
         radial-gradient(circle at 16% 78%, rgba(215,25,32,.22), transparent 25%),
@@ -344,9 +378,9 @@
     .benefit-card { position: relative; min-height: 360px; padding: 28px; overflow: hidden; border: 1px solid #e2e2e2; border-radius: 16px; background: white; transition: transform .35s, box-shadow .35s, border-color .35s; }
     .benefit-card:hover { position: relative; z-index: 1; transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.08); }
     .benefit-number { color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: .1em; }
-    .benefit-icon { width: 72px; height: 72px; display: grid; place-items: center; margin: 32px 0 44px; border-radius: 18px; color: white; background: var(--black); box-shadow: 12px 12px 0 rgba(215,25,32,.1); transition: background .3s, transform .3s; }
-    .benefit-card:hover .benefit-icon { background: var(--red); transform: rotate(-4deg) scale(1.04); }
-    .benefit-icon svg { width: 34px; height: 34px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .benefit-icon { width: 112px; height: 112px; display: grid; place-items: center; margin: 18px 0 26px; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+    .benefit-card:hover .benefit-icon { transform: translateY(-5px) rotate(-2deg) scale(1.045); }
+    .benefit-icon img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 10px rgba(16,16,16,.13)); }
     .benefit-card::after { content: ""; position: absolute; width: 110px; height: 110px; right: -55px; top: -55px; border-radius: 50%; background: rgba(215,25,32,.08); transition: transform .4s; }
     .benefit-card:hover::after { transform: scale(1.35); }
     .benefit-card h3 { margin: 0 0 13px; font-size: 20px; letter-spacing: -.025em; }
@@ -501,17 +535,22 @@
         border-radius: 26px 26px 0 0;
       }
       .section::before {
-        top: 55px;
-        right: -80px;
-        width: 540px;
-        height: 405px;
-        opacity: .035;
+        top: 70px;
+        right: -175px;
+        width: 470px;
+        height: 470px;
+        opacity: .04;
       }
       .section::after {
         background-size: auto, 24px 24px, auto;
         opacity: .22;
       }
-      .section:nth-of-type(even)::before { left: -95px; }
+      .section:nth-of-type(even)::before {
+        left: -165px;
+        width: 520px;
+        height: 360px;
+      }
+      .market::before, .final-cta::before { opacity: .025; }
       .section > .section-inner { text-align: center; }
       .section-title, .section-lead { margin-right: auto; margin-left: auto; }
       .benefit-grid, .stats, .journey-grid, .testimonial-grid { grid-template-columns: 1fr; }
@@ -587,6 +626,7 @@
       .reveal { opacity: 1; transform: none; transition: none; }
       .benefit-card, .testimonial { transition: none; }
       .brand, .hero-content .eyebrow, .hero-content h1, .hero-content .hero-copy, .hero-content .hero-cta { animation: none; }
+      .hero-cta::after, .inline-cta::after, .submit::after, .cta-link::after { animation: none; opacity: 0; }
       body::before { opacity: .035; }
       .recurrence-badge::before { animation: none; }
     }
