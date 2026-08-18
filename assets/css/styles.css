@@ -25,7 +25,7 @@
       pointer-events: none;
       z-index: 9999;
       inset: 0;
-      opacity: .055;
+      opacity: .035;
       background-image: url("../textures/noise.gif?v=2");
       background-repeat: repeat;
       background-size: 250px 350px;
@@ -298,7 +298,7 @@
       height: 560px;
       pointer-events: none;
       background: url("../graphics/pattern-logistica.svg?v=2") center / contain no-repeat;
-      opacity: .09;
+      opacity: .05;
       transform: rotate(-4deg);
     }
     .section::after {
@@ -312,7 +312,7 @@
         radial-gradient(circle, rgba(16,16,16,.14) 1px, transparent 1.5px),
         repeating-linear-gradient(135deg, transparent 0, transparent 76px, rgba(16,16,16,.09) 77px, transparent 78px);
       background-size: auto, 30px 30px, auto;
-      opacity: .48;
+      opacity: .28;
       -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
       mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
     }
@@ -322,13 +322,13 @@
       transform: rotate(7deg) scale(.92);
     }
     .section > .section-inner { position: relative; z-index: 1; }
-    .market::before, .final-cta::before { filter: invert(1); opacity: .095; }
+    .market::before, .final-cta::before { filter: invert(1); opacity: .05; }
     .market::after, .final-cta::after {
       background-image:
         radial-gradient(circle at 16% 78%, rgba(215,25,32,.22), transparent 25%),
         radial-gradient(circle, rgba(255,255,255,.12) 1px, transparent 1.5px),
         repeating-linear-gradient(135deg, transparent 0, transparent 76px, rgba(255,255,255,.1) 77px, transparent 78px);
-      opacity: .5;
+      opacity: .3;
     }
     .section + .section { z-index: 2; }
     .section + .section + .section { z-index: 3; }
@@ -505,11 +505,11 @@
         right: -80px;
         width: 540px;
         height: 405px;
-        opacity: .08;
+        opacity: .035;
       }
       .section::after {
         background-size: auto, 24px 24px, auto;
-        opacity: .4;
+        opacity: .22;
       }
       .section:nth-of-type(even)::before { left: -95px; }
       .section > .section-inner { text-align: center; }
@@ -542,6 +542,7 @@
         min-height: 390px;
         text-align: center;
       }
+      .testimonial::before { content: none; }
       .testimonial-tag { margin-right: auto; margin-left: auto; }
       .testimonial-copy h3, .testimonial-copy p { margin-right: auto; margin-left: auto; }
       .testimonial-copy p { margin-top: 0; }
@@ -557,16 +558,22 @@
       .carousel-dot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: #cfcfcf; cursor: pointer; transition: width .25s, border-radius .25s, background .25s; }
       .carousel-dot.is-active { width: 25px; border-radius: 999px; background: var(--red); }
       .carousel-arrows { display: flex; gap: 8px; }
-      .carousel-arrow { width: 43px; height: 43px; display: grid; place-items: center; padding: 0; border: 1px solid #ddd; border-radius: 50%; color: var(--black); background: white; font-size: 0; line-height: 0; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+      .carousel-arrow { position: relative; width: 43px; height: 43px; display: grid; place-items: center; padding: 0; border: 1px solid #ddd; border-radius: 50%; color: var(--black); background: white; font-size: 0; line-height: 0; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
       .carousel-arrow::before {
         content: "";
+        position: absolute;
+        inset: 0;
         width: 21px;
         height: 21px;
+        margin: auto;
         background: currentColor;
         -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 12H4M10 6l-6 6 6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 12H4M10 6l-6 6 6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
       }
-      .carousel-next::before { transform: rotate(180deg); }
+      .carousel-next::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12h16m-6-6 6 6-6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12h16m-6-6 6 6-6 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      }
       .carousel-arrow:active { color: white; border-color: var(--red); background: var(--red); }
       .recurrence-visual { min-height: 0; max-width: none; aspect-ratio: 3 / 2; }
       .recurrence-badge { left: 14px; bottom: 14px; padding: 13px 14px; border-radius: 14px; font-size: 9px; }
